@@ -32,7 +32,7 @@
 
         public override string ToString()
         {
-            return $"Best annualized rate of return: {Results.AnnualizedRateOfReturn * 100.0:0.00} % with {NumPeriods} periods {NumStddevs:0.0000} stddevs. Buy: {BuyTargetPercent * 100.0:0.0} %, Sell: {SellTargetPercent * 100.0:0.0} %, Profit: {Results.Profit:C}, Trade Span: {Results.TradeSpanPercentage * 100.0:0.00} %";
+            return $"Best annualized rate of return: {Results.AnnualizedRateOfReturn * 100.0:0.00} % with {NumPeriods} periods {NumStddevs:0.0000} stddevs. Buy: {BuyTargetPercent * 100.0:0.000} %, Sell: {SellTargetPercent * 100.0:0.000} %, Profit: {Results.Profit:C}, Trade Span: {Results.TradeSpanPercentage * 100.0:0.00} %";
         }
 
         public void UpdateResults(AnalyzerState state) => Results = state.GetPerformanceResults();

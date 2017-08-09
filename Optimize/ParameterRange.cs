@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace Optimize
@@ -12,10 +12,10 @@ namespace Optimize
 
         public ParameterRange()
         {
-            NumPeriods        = new IntParameterRange    { Begin = 2,   End = 20,                   Min = 2,   Max = 20 };
-            NumStddevs        = new DoubleParameterRange { Begin = 0.5, End = 4.0, StepSize = 0.1,  Min = 0.5, Max = 4.0 };
-            BuyTargetPercent  = new DoubleParameterRange { Begin = 0.9, End = 1.1, StepSize = 0.01, Min = 0.9, Max = 1.1 };
-            SellTargetPercent = new DoubleParameterRange { Begin = 0.9, End = 1.1, StepSize = 0.01, Min = 0.9, Max = 1.1 };
+            NumPeriods        = new IntParameterRange(2, 20);
+            NumStddevs        = new DoubleParameterRange(0.5, 5, 0.1);
+            BuyTargetPercent  = new DoubleParameterRange(0.97, 1.00, 0.005);
+            SellTargetPercent = new DoubleParameterRange(1.00, 1.03, 0.005);
         }
 
         /// <summary>
@@ -87,8 +87,16 @@ namespace Optimize
             public int Begin;
             public int End;
 
-            public int Min;
-            public int Max;
+            public readonly int Min;
+            public readonly int Max;
+
+            public IntParameterRange(int min, int max)
+            {
+                Min   = min;
+                Max   = max;
+                Begin = min;
+                End   = max;
+            }
 
             public override string ToString()
             {
@@ -102,8 +110,17 @@ namespace Optimize
             public double End;
             public double StepSize;
 
-            public double Min;
-            public double Max;
+            public readonly double Min;
+            public readonly double Max;
+
+            public DoubleParameterRange(double min, double max, double stepSize)
+            {
+                Min      = min;
+                Max      = max;
+                Begin    = min;
+                End      = max;
+                StepSize = stepSize;
+            }
 
             public override string ToString()
             {

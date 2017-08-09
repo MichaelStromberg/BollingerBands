@@ -56,7 +56,8 @@ namespace Optimize
         /// </summary>
         public void Optimize()
         {
-            var analyzer              = new SingleAnalyzer(_security, _transactionFee);
+            const int numDaysUntilSettlement = 5;
+            var analyzer              = new SingleAnalyzer(_security, _transactionFee, numDaysUntilSettlement);
             var paramRange            = new ParameterRange();
             Parameters bestParameters = null;
 
@@ -70,12 +71,19 @@ namespace Optimize
                 Console.WriteLine();
             }
 
+            DisplayTransactions(analyzer, bestParameters);
+
             if (bestParameters == null) return;
 
             Console.WriteLine("Results:");
             Console.WriteLine("================================================================================");
             Console.WriteLine(bestParameters);
-            //bestParameters.Save(_security.GetBollingerBandPath());
+            //parameters.Save(_security.GetBollingerBandPath());
+        }
+
+        private void DisplayTransactions(IAnalyzer analyzer, Parameters parameters)
+        {
+            analyzer.CalculatePerformanceResults(parameters, _startCapital, true);
         }
     }
 }
