@@ -1,16 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="ROI.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Securities\Securities.csproj" />
   </ItemGroup>
-
 </Project>

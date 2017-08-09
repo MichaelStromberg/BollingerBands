@@ -5,18 +5,11 @@ namespace Optimize
 {
     public class ParameterRange
     {
-        #region members
-
         public readonly IntParameterRange NumPeriods;
         public readonly DoubleParameterRange NumStddevs;
         public readonly DoubleParameterRange BuyTargetPercent;
         public readonly DoubleParameterRange SellTargetPercent;
 
-        #endregion
-
-        /// <summary>
-        /// constructor
-        /// </summary>
         public ParameterRange()
         {
             NumPeriods        = new IntParameterRange    { Begin = 2,   End = 20,                   Min = 2,   Max = 20 };

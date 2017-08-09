@@ -3,7 +3,7 @@ using Securities;
 
 namespace Optimize
 {
-    class Optimizer
+    internal class Optimizer
     {
         private readonly ISecurity _security;
         private readonly double _startCapital;
@@ -25,7 +25,7 @@ namespace Optimize
             Console.WriteLine(paramRange);
 
             var currentParameters = new Parameters(paramRange);
-            var bestParameters    = new Parameters();
+            var bestParameters    = new Parameters(paramRange);
             bestParameters.Update(currentParameters);
 
             for (currentParameters.NumPeriods = paramRange.NumPeriods.Begin; currentParameters.NumPeriods <= paramRange.NumPeriods.End; currentParameters.NumPeriods++)
@@ -36,8 +36,8 @@ namespace Optimize
                     {
                         for (currentParameters.SellTargetPercent = paramRange.SellTargetPercent.Begin; currentParameters.SellTargetPercent < paramRange.SellTargetPercent.End; currentParameters.SellTargetPercent += paramRange.SellTargetPercent.StepSize)
                         {
-                            analyzer.SetAnnualizedRateOfReturn(currentParameters, _startCapital);
-                            if (currentParameters.Profit <= bestParameters.Profit) continue;
+                            analyzer.CalculatePerformanceResults(currentParameters, _startCapital);
+                            if (currentParameters.Results.WeightedProfit <= bestParameters.Results.WeightedProfit) continue;
 
                             bestParameters.Update(currentParameters);
                             Console.WriteLine(bestParameters);
@@ -56,11 +56,11 @@ namespace Optimize
         /// </summary>
         public void Optimize()
         {
-            var analyzer       = new SingleAnalyzer(_security, _transactionFee);
-            var paramRange     = new ParameterRange();
-            var bestParameters = new Parameters();
+            var analyzer              = new SingleAnalyzer(_security, _transactionFee);
+            var paramRange            = new ParameterRange();
+            Parameters bestParameters = null;
 
-            const int numStages = 1;
+            const int numStages = 5;
 
             for (int currentStage = 1; currentStage <= numStages; currentStage++)
             {
@@ -69,6 +69,8 @@ namespace Optimize
                 bestParameters = FindBestParameters(analyzer, paramRange);
                 Console.WriteLine();
             }
+
+            if (bestParameters == null) return;
 
             Console.WriteLine("Results:");
             Console.WriteLine("================================================================================");

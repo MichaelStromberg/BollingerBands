@@ -9,43 +9,44 @@ namespace Optimize
         private readonly double _transactionFee;
 
         private readonly Transaction _firstPurchase = new Transaction();
-        private readonly Transaction _lastSale = new Transaction();
+        private readonly Transaction _lastSale      = new Transaction();
         private readonly Parameters _parameters;
+        private readonly double _initialBalance;
 
+        private bool _hasPendingSellTransaction;
+        private readonly long _totalTicks;
+        
         private double _balance;
         private double _totalPurchasePrice;
         private int _numSharesOwned;
 
-        public AnalyzerState(Parameters parameters, double transactionFee, double balance)
+        public AnalyzerState(Parameters parameters, double transactionFee, double balance, long totalTicks)
         {
             _balance        = balance;
+            _initialBalance = balance;
             _parameters     = parameters;
             _transactionFee = transactionFee;
-            BollingerBand   = new BollingerBand(parameters.NumPeriods, parameters.NumStddevs);
+            _totalTicks     = totalTicks;
+
+            BollingerBand = new BollingerBand(parameters.NumPeriods, parameters.NumStddevs);
         }
 
-        /// <summary>
-        /// returns the annualized rate of return
-        /// </summary>
-        public double GetAnnualizedRateOfReturn(double profit)
-        {
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (!_firstPurchase.IsEnabled || !_lastSale.IsEnabled ||
-                _firstPurchase.Balance == default(double)) return 0.0;
-
-            // calculate the gain and how many days have passed
-            var percentGain = profit / _firstPurchase.Balance * 100.0;
-            var timeSpan = new TimeSpan(_lastSale.TimeStamp.Ticks - _firstPurchase.TimeStamp.Ticks);
-
-            return percentGain / timeSpan.TotalDays * 365.0;
-        }
-
-        public double GetProfit() => _firstPurchase.IsEnabled && _lastSale.IsEnabled
+        private double GetProfit() => _firstPurchase.IsEnabled && _lastSale.IsEnabled
             ? _lastSale.Balance - _firstPurchase.Balance
             : 0.0;
 
+        private long GetTradingTicks() => _firstPurchase.IsEnabled && _lastSale.IsEnabled
+            ? _lastSale.TimeStamp.Ticks - _firstPurchase.TimeStamp.Ticks
+            : 0;
+
+        private static double GetNumDays(long numTradingTicks) => new TimeSpan(numTradingTicks).TotalDays;
+
+        private double GetTradeSpanPercentage(long numTradingTicks) => numTradingTicks / (double) _totalTicks;
+
         public void SellShares(IPrice price)
         {
+            _hasPendingSellTransaction = false;
+
             // sanity check: nothing to sell
             if (_numSharesOwned == 0) return;
 
@@ -67,7 +68,7 @@ namespace Optimize
         public void BuyShares(IPrice price)
         {
             // sanity check: nothing to buy
-            if (_numSharesOwned != 0) return;
+            if (_hasPendingSellTransaction || _numSharesOwned != 0) return;
 
             double maxBuyPrice   = BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent;
             double shareBuyPrice = price.Close;
@@ -82,6 +83,17 @@ namespace Optimize
 
                 if (!_firstPurchase.IsEnabled) _firstPurchase.Set(price.Date, _balance);
             }
+        }
+
+        public PerformanceResults GetPerformanceResults()
+        {
+            var profit                 = GetProfit();
+            var numTradingTicks        = GetTradingTicks();
+            var numDays                = GetNumDays(numTradingTicks);
+            var annualizedRateOfReturn = InvestmentStatistics.GetAnnualizedRateOfReturn(_initialBalance, profit, numDays);
+            var tradeSpanPercentage    = GetTradeSpanPercentage(numTradingTicks);
+
+            return new PerformanceResults(annualizedRateOfReturn, profit, tradeSpanPercentage);
         }
     }
 }

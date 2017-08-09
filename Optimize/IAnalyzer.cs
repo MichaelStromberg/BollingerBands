@@ -2,6 +2,6 @@
 {
     public interface IAnalyzer
     {
-        void SetAnnualizedRateOfReturn(Parameters parameters, double startCapital);
+        void CalculatePerformanceResults(Parameters parameters, double startCapital);
     }
 }

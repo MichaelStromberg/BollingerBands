@@ -13,13 +13,10 @@ namespace Optimize
             _transactionFee = transactionFee;
         }
 
-        /// <summary>
-        /// returns the annualized rate of return given a security and start capital
-        /// with optimal Bollinger Bands
-        /// </summary>
-        public void SetAnnualizedRateOfReturn(Parameters parameters, double startCapital)
+        public void CalculatePerformanceResults(Parameters parameters, double startCapital)
         {
-            var state = new AnalyzerState(parameters, _transactionFee, startCapital);
+            var totalTicks = _security.Prices[_security.Prices.Length - 1].Date.Ticks - _security.Prices[0].Date.Ticks;
+            var state      = new AnalyzerState(parameters, _transactionFee, startCapital, totalTicks);
 
             foreach (var price in _security.Prices)
             {
@@ -32,8 +29,7 @@ namespace Optimize
                 state.BollingerBand.Recalculate(price);
             }
 
-            parameters.Profit = state.GetProfit();
-            parameters.AnnualizedRateOfReturn = state.GetAnnualizedRateOfReturn(parameters.Profit);
+            parameters.UpdateResults(state);
         }
     }
 }

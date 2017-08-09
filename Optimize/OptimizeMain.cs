@@ -4,7 +4,7 @@ using Securities;
 
 namespace Optimize
 {
-    class OptimizeMain
+    static class OptimizeMain
     {
         static void Main(string[] args)
         {
@@ -14,8 +14,8 @@ namespace Optimize
                 Environment.Exit(1);
             }
 
-            var filePath  = args[0];
-            var security  = LoadSecurity(filePath);
+            var filePath = args[0];
+            var security = LoadSecurity(filePath).LastYear();
 
             var optimizer = new Optimizer(security);
             optimizer.Optimize();

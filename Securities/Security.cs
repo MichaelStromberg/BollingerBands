@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Securities
 {
@@ -21,6 +22,19 @@ namespace Securities
             writer.Write(Symbol);
             writer.Write(Prices.Length);
             foreach (var price in Prices) price.Write(writer);
+        }
+
+        public ISecurity LastYear()
+        {
+            var thresholdTicks = Prices[Prices.Length - 1].Date.AddYears(-1).Ticks;
+            var newPrices = new List<IPrice>();
+
+            foreach (var price in Prices)
+            {
+                if (price.Date.Ticks >= thresholdTicks) newPrices.Add(price);
+            }
+
+            return new Security(Symbol, newPrices.ToArray());
         }
 
         public static ISecurity GetSecurity(BinaryReader reader)

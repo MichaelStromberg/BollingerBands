@@ -7,5 +7,6 @@ namespace Securities
         string Symbol { get; }
         IPrice[] Prices { get; }
         void Write(BinaryWriter writer);
+        ISecurity LastYear();
     }
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Optimize": {
+      "commandName": "Project",
+      "commandLineArgs": "e:\\Data\\BollingerBands\\Illumina_20170808.dat"
+    }
+  }
+}

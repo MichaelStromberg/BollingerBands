@@ -4,7 +4,7 @@ using Securities.Sources;
 
 namespace GoogleFinanceDownload
 {
-    class GoogleFinanceMain
+    static class GoogleFinanceMain
     {
         static void Main(string[] args)
         {
