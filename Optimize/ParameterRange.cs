@@ -7,10 +7,10 @@ namespace Optimize
     {
         #region members
 
-        public IntParameterRange NumPeriods;
-        public DoubleParameterRange NumStddevs;
-        public DoubleParameterRange BuyTargetPercent;
-        public DoubleParameterRange SellTargetPercent;
+        public readonly IntParameterRange NumPeriods;
+        public readonly DoubleParameterRange NumStddevs;
+        public readonly DoubleParameterRange BuyTargetPercent;
+        public readonly DoubleParameterRange SellTargetPercent;
 
         #endregion
 

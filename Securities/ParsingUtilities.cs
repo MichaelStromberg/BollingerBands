@@ -10,13 +10,7 @@ namespace Securities
         /// </summary>
         public static DateTime GetDate(string s)
         {
-            bool conversionSuccess = false;
-            var date = DateTime.Now;
-
-            if (DateTime.TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-            {
-                conversionSuccess = true;
-            }
+            bool conversionSuccess = DateTime.TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);
 
             if (!conversionSuccess && DateTime.TryParseExact(s, "d-MMM-yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
             {

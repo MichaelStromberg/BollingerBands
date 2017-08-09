@@ -19,7 +19,7 @@ namespace Optimize
         /// <summary>
         /// returns the optimal parameters given an analyzer, security, and parameter range
         /// </summary>
-        private Parameters FindBestParameters(IAnalyzer analyzer, ISecurity security, ParameterRange paramRange)
+        private Parameters FindBestParameters(IAnalyzer analyzer, ParameterRange paramRange)
         {
             Console.WriteLine("Parameter estimation using the following parameter ranges:");
             Console.WriteLine(paramRange);
@@ -66,7 +66,7 @@ namespace Optimize
             {
                 Console.WriteLine("Current stage: {0} ({1})", currentStage, _security.Symbol);
                 Console.WriteLine("================================");
-                bestParameters = FindBestParameters(analyzer, _security, paramRange);
+                bestParameters = FindBestParameters(analyzer, paramRange);
                 Console.WriteLine();
             }
 
