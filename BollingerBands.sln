@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Securities", "Securities\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleFinanceDownload", "GoogleFinanceDownload\GoogleFinanceDownload.csproj", "{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optimize", "Optimize\Optimize.csproj", "{455061F1-D92F-4832-B07C-477C50E2001A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B9F90443-4356-4EFF-ADFA-AF4CC13B2EDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455061F1-D92F-4832-B07C-477C50E2001A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455061F1-D92F-4832-B07C-477C50E2001A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455061F1-D92F-4832-B07C-477C50E2001A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455061F1-D92F-4832-B07C-477C50E2001A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9F90443-4356-4EFF-ADFA-AF4CC13B2EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9F90443-4356-4EFF-ADFA-AF4CC13B2EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9F90443-4356-4EFF-ADFA-AF4CC13B2EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9F90443-4356-4EFF-ADFA-AF4CC13B2EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
