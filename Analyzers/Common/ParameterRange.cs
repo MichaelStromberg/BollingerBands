@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Optimize
+namespace Analyzers.Common
 {
     public class ParameterRange
     {

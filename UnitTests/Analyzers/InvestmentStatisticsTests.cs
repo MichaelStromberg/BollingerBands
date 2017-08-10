@@ -1,7 +1,7 @@
-﻿using Optimize;
+﻿using Analyzers.Common;
 using Xunit;
 
-namespace UnitTests.Optimize
+namespace UnitTests.Analyzers
 {
     public class InvestmentStatisticsTests
     {

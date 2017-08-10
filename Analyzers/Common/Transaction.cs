@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Optimize
+namespace Analyzers.Common
 {
     public class Transaction
     {

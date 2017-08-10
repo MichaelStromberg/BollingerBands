@@ -1,4 +1,4 @@
-﻿namespace Optimize
+﻿namespace Analyzers.Common
 {
     public static class InvestmentStatistics
     {

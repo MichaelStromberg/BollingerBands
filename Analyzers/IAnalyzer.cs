@@ -1,4 +1,6 @@
-﻿namespace Optimize
+﻿using Analyzers.Common;
+
+namespace Analyzers
 {
     public interface IAnalyzer
     {

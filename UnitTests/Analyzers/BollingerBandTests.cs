@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Optimize;
+using Analyzers.Common;
 using Securities;
 using Xunit;
 
-namespace UnitTests.Optimize
+namespace UnitTests.Analyzers
 {
     public class BollingerBandTests
     {

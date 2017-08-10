@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Securities;
 
-namespace Optimize
+namespace Analyzers.Common
 {
     public class BollingerBand
     {

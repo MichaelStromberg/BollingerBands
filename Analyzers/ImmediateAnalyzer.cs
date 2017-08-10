@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Analyzers.Common;
 using Securities;
 
-namespace Optimize
+namespace Analyzers
 {
-    public class SingleAnalyzer : IAnalyzer
+    public class ImmediateAnalyzer : IAnalyzer
     {
         private readonly ISecurity _security;
         private readonly double _transactionFee;
         private readonly int _numDaysUntilSettlement;
 
-        public SingleAnalyzer(ISecurity security, double transactionFee, int numDaysUntilSettlement)
+        public ImmediateAnalyzer(ISecurity security, double transactionFee, int numDaysUntilSettlement)
         {
             _security               = security;
             _transactionFee         = transactionFee;

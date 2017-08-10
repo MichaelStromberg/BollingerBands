@@ -1,9 +1,9 @@
 ﻿using System;
 using Securities;
 
-namespace Optimize
+namespace Analyzers.Common
 {
-    public class AnalyzerState
+    public class AnalyzerState : IAnalyzerState
     {
         public readonly BollingerBand BollingerBand;
         private readonly double _transactionFee;

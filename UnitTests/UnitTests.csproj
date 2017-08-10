@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
     <ProjectReference Include="..\Optimize\Optimize.csproj" />
     <ProjectReference Include="..\Securities\Securities.csproj" />
   </ItemGroup>

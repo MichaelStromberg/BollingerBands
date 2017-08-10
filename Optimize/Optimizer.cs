@@ -1,4 +1,6 @@
 ﻿using System;
+using Analyzers;
+using Analyzers.Common;
 using Securities;
 
 namespace Optimize
@@ -57,7 +59,7 @@ namespace Optimize
         public void Optimize()
         {
             const int numDaysUntilSettlement = 5;
-            var analyzer              = new SingleAnalyzer(_security, _transactionFee, numDaysUntilSettlement);
+            var analyzer              = new DeferredAnalyzer(_security, _transactionFee, numDaysUntilSettlement);
             var paramRange            = new ParameterRange();
             Parameters bestParameters = null;
 

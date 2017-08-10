@@ -1,4 +1,4 @@
-﻿namespace Optimize
+﻿namespace Analyzers.Common
 {
     public class PerformanceResults
     {
