@@ -4,35 +4,41 @@ using Securities;
 
 namespace Optimize
 {
-    static class OptimizeMain
+    public static class OptimizeMain
     {
         static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length != 3)
             {
-                Console.WriteLine("USAGE: {0} <input path>", Path.GetFileName(Environment.GetCommandLineArgs()[0]));
+                Console.WriteLine("USAGE: {0} <input path> <output path> <# of years>", Path.GetFileName(Environment.GetCommandLineArgs()[0]));
                 Environment.Exit(1);
             }
 
-            var filePath = args[0];
-            var security = LoadSecurity(filePath).LastYear();
+            var inputPath  = args[0];
+            var outputPath = args[1];
+            var numYears   = int.Parse(args[2]);
+            var security   = LoadSecurity(inputPath);
+
+            var lastDate  = security.Prices[security.Prices.Length - 1].Date;
+            var firstDate = lastDate.AddYears(-numYears);
+            security      = security.Filter(firstDate, lastDate);
 
             var optimizer = new Optimizer(security);
-            optimizer.Optimize();
+            optimizer.Optimize(outputPath);
         }
 
-        private static ISecurity LoadSecurity(string filePath)
+        public static ISecurity LoadSecurity(string filePath)
         {
             Console.Write("- loading the security... ");
 
-            ISecurity ilmn;
+            ISecurity security;
             using (var reader = new BinaryReader(new FileStream(filePath, FileMode.Open)))
             {
-                ilmn = Security.GetSecurity(reader);
+                security = Security.GetSecurity(reader);
             }
 
-            Console.WriteLine($"{ilmn.Prices.Length} prices loaded.");
-            return ilmn;
+            Console.WriteLine($"{security.Prices.Length} prices loaded.");
+            return security;
         }
     }
 }

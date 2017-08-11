@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 using Analyzers;
 using Analyzers.Common;
 using Securities;
 
 namespace Optimize
 {
-    internal class Optimizer
+    public class Optimizer
     {
         private readonly ISecurity _security;
         private readonly double _startCapital;
@@ -56,7 +57,7 @@ namespace Optimize
         /// <summary>
         /// analyzes each security for Bollinger Band values
         /// </summary>
-        public void Optimize()
+        public Parameters Optimize(string outputPath)
         {
             const int numDaysUntilSettlement = 5;
             var analyzer              = new DeferredAnalyzer(_security, _transactionFee, numDaysUntilSettlement);
@@ -70,17 +71,23 @@ namespace Optimize
                 Console.WriteLine("Current stage: {0} ({1})", currentStage, _security.Symbol);
                 Console.WriteLine("================================");
                 bestParameters = FindBestParameters(analyzer, paramRange);
-                Console.WriteLine();
             }
 
             DisplayTransactions(analyzer, bestParameters);
 
-            if (bestParameters == null) return;
+            if (bestParameters == null) return null;
 
             Console.WriteLine("Results:");
             Console.WriteLine("================================================================================");
             Console.WriteLine(bestParameters);
-            //parameters.Save(_security.GetBollingerBandPath());
+            Console.WriteLine();
+
+            using (var writer = new BinaryWriter(new FileStream(outputPath, FileMode.Create)))
+            {
+                bestParameters.Write(writer);
+            }
+
+            return bestParameters;
         }
 
         private void DisplayTransactions(IAnalyzer analyzer, Parameters parameters)

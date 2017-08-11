@@ -1,4 +1,6 @@
-﻿namespace Analyzers.Common
+﻿using System.IO;
+
+namespace Analyzers.Common
 {
     public class Parameters
     {
@@ -36,5 +38,13 @@
         }
 
         public void UpdateResults(IAnalyzerState state) => Results = state.GetPerformanceResults();
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(NumPeriods);
+            writer.Write(NumStddevs);
+            writer.Write(BuyTargetPercent);
+            writer.Write(SellTargetPercent);
+        }
     }
 }

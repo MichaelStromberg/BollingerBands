@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Securities
 {
@@ -7,6 +8,6 @@ namespace Securities
         string Symbol { get; }
         IPrice[] Prices { get; }
         void Write(BinaryWriter writer);
-        ISecurity LastYear();
+        ISecurity Filter(DateTime beginDate, DateTime endDate);
     }
 }

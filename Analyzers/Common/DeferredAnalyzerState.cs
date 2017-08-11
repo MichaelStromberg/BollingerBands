@@ -59,11 +59,11 @@ namespace Analyzers.Common
 
         public PerformanceResults GetPerformanceResults()
         {
-            var profit = GetProfit();
-            var numTradingTicks = GetTradingTicks();
-            var numDays = GetNumDays(numTradingTicks);
+            var profit                 = GetProfit();
+            var numTradingTicks        = GetTradingTicks();
+            var numDays                = GetNumDays(numTradingTicks);
             var annualizedRateOfReturn = InvestmentStatistics.GetAnnualizedRateOfReturn(_initialBalance, profit, numDays);
-            var tradeSpanPercentage = GetTradeSpanPercentage(numTradingTicks);
+            var tradeSpanPercentage    = GetTradeSpanPercentage(numTradingTicks);
 
             return new PerformanceResults(annualizedRateOfReturn, profit, tradeSpanPercentage);
         }
@@ -154,7 +154,9 @@ namespace Analyzers.Common
             {
                 double purchaseBudget = _balance - _transactionFee;
 
-                _order              = null;
+                if (!_firstPurchase.IsEnabled) _firstPurchase.Set(price.Date, _balance);
+
+                _order = null;
                 _numSharesOwned     = (int)(purchaseBudget / closePrice);
                 _totalPurchasePrice = GetTotalPurchasePrice(_numSharesOwned, closePrice);
                 _balance -= _totalPurchasePrice;
@@ -164,8 +166,6 @@ namespace Analyzers.Common
                     ShowStatus(price);
                     DisplayPurchase(_numSharesOwned, _totalPurchasePrice);
                 }
-
-                if (!_firstPurchase.IsEnabled) _firstPurchase.Set(price.Date, _balance);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Securities
@@ -24,14 +25,16 @@ namespace Securities
             foreach (var price in Prices) price.Write(writer);
         }
 
-        public ISecurity LastYear()
+        public ISecurity Filter(DateTime beginDate, DateTime endDate)
         {
-            var thresholdTicks = Prices[Prices.Length - 1].Date.AddYears(-1).Ticks;
-            var newPrices = new List<IPrice>();
+            var beginTicks = beginDate.Ticks;
+            var endTicks   = endDate.Ticks;
+            var newPrices  = new List<IPrice>();
 
             foreach (var price in Prices)
             {
-                if (price.Date.Ticks >= thresholdTicks) newPrices.Add(price);
+                var ticks = price.Date.Ticks;
+                if (ticks >= beginTicks && ticks <= endTicks) newPrices.Add(price);
             }
 
             return new Security(Symbol, newPrices.ToArray());
