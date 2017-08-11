@@ -27,9 +27,9 @@ namespace Optimize
             optimizer.Optimize(outputPath);
         }
 
-        public static ISecurity LoadSecurity(string filePath)
+        public static ISecurity LoadSecurity(string filePath, bool showOutput = true)
         {
-            Console.Write("- loading the security... ");
+            if (showOutput) Console.Write("- loading the security... ");
 
             ISecurity security;
             using (var reader = new BinaryReader(new FileStream(filePath, FileMode.Open)))
@@ -37,7 +37,7 @@ namespace Optimize
                 security = Security.GetSecurity(reader);
             }
 
-            Console.WriteLine($"{security.Prices.Length} prices loaded.");
+            if (showOutput) Console.WriteLine($"{security.Prices.Length} prices loaded.");
             return security;
         }
     }

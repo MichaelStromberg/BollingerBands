@@ -11,12 +11,14 @@ namespace Optimize
         private readonly ISecurity _security;
         private readonly double _startCapital;
         private readonly double _transactionFee;
+        private readonly bool _showOutput;
 
-        public Optimizer(ISecurity security, double startCapital = 100000.0, double transactionFee = 9.99)
+        public Optimizer(ISecurity security, double startCapital = 100000.0, double transactionFee = 9.99, bool showOutput = true)
         {
             _security       = security;
             _startCapital   = startCapital;
             _transactionFee = transactionFee;
+            _showOutput     = showOutput;
         }
 
         /// <summary>
@@ -24,8 +26,11 @@ namespace Optimize
         /// </summary>
         private Parameters FindBestParameters(IAnalyzer analyzer, ParameterRange paramRange)
         {
-            Console.WriteLine("Parameter estimation using the following parameter ranges:");
-            Console.WriteLine(paramRange);
+            if (_showOutput)
+            {
+                Console.WriteLine("Parameter estimation using the following parameter ranges:");
+                Console.WriteLine(paramRange);
+            }
 
             var currentParameters = new Parameters(paramRange);
             var bestParameters    = new Parameters(paramRange);
@@ -43,7 +48,7 @@ namespace Optimize
                             if (currentParameters.Results.WeightedProfit <= bestParameters.Results.WeightedProfit) continue;
 
                             bestParameters.Update(currentParameters);
-                            Console.WriteLine(bestParameters);
+                            if (_showOutput) Console.WriteLine(bestParameters);
                         }
                     }
                 }
@@ -68,19 +73,26 @@ namespace Optimize
 
             for (int currentStage = 1; currentStage <= numStages; currentStage++)
             {
-                Console.WriteLine("Current stage: {0} ({1})", currentStage, _security.Symbol);
-                Console.WriteLine("================================");
+                if (_showOutput)
+                {
+                    Console.WriteLine("Current stage: {0} ({1})", currentStage, _security.Symbol);
+                    Console.WriteLine("================================");
+                }
+
                 bestParameters = FindBestParameters(analyzer, paramRange);
             }
 
-            DisplayTransactions(analyzer, bestParameters);
+            if (_showOutput) DisplayTransactions(analyzer, bestParameters);
 
             if (bestParameters == null) return null;
 
-            Console.WriteLine("Results:");
-            Console.WriteLine("================================================================================");
-            Console.WriteLine(bestParameters);
-            Console.WriteLine();
+            if (_showOutput)
+            {
+                Console.WriteLine("Results:");
+                Console.WriteLine("================================================================================");
+                Console.WriteLine(bestParameters);
+                Console.WriteLine();
+            }
 
             using (var writer = new BinaryWriter(new FileStream(outputPath, FileMode.Create)))
             {
@@ -92,7 +104,7 @@ namespace Optimize
 
         private void DisplayTransactions(IAnalyzer analyzer, Parameters parameters)
         {
-            analyzer.CalculatePerformanceResults(parameters, _startCapital, true);
+            analyzer.CalculatePerformanceResults(parameters, _startCapital, _showOutput);
         }
     }
 }
