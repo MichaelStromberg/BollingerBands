@@ -11,14 +11,18 @@ namespace Analyzers.Common
         public double BuyTargetPercent;
         public double SellTargetPercent;
 
-        public Parameters(ParameterRange range)
+        private Parameters(int numPeriods, double numStddevs, double buyTargetPercent, double sellTargetPercent)
         {
-            NumPeriods        = range.NumPeriods.Begin;
-            NumStddevs        = range.NumStddevs.Begin;
-            BuyTargetPercent  = range.BuyTargetPercent.Begin;
-            SellTargetPercent = range.SellTargetPercent.Begin;
+            NumPeriods        = numPeriods;
+            NumStddevs        = numStddevs;
+            BuyTargetPercent  = buyTargetPercent;
+            SellTargetPercent = sellTargetPercent;
             Results           = new PerformanceResults();
         }
+
+        public Parameters(ParameterRange range) : this(range.NumPeriods.Begin, range.NumStddevs.Begin,
+            range.BuyTargetPercent.Begin, range.SellTargetPercent.Begin)
+        {}
 
         /// <summary>
         /// clones the given parameters object
@@ -38,6 +42,15 @@ namespace Analyzers.Common
         }
 
         public void UpdateResults(IAnalyzerState state) => Results = state.GetPerformanceResults();
+
+        public static Parameters Read(BinaryReader reader)
+        {
+            var numPeriods        = reader.ReadInt32();
+            var numStddevs        = reader.ReadDouble();
+            var buyTargetPercent  = reader.ReadDouble();
+            var sellTargetPercent = reader.ReadDouble();
+            return new Parameters(numPeriods, numStddevs, buyTargetPercent, sellTargetPercent);
+        }
 
         public void Write(BinaryWriter writer)
         {

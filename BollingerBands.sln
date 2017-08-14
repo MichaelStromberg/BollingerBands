@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Securities", "Securities\Securities.csproj", "{9B27B74E-5279-4477-B600-70A4B4E8B1F1}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchDownloader", "BatchDownloader\BatchDownloader.csproj", "{CA278095-3E85-4105-BC59-D47CB9E048D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchOptimize", "BatchOptimize\BatchOptimize.csproj", "{6E8EC102-B78A-41C0-A358-FA4F366194B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitor", "Monitor\Monitor.csproj", "{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{6E8EC102-B78A-41C0-A358-FA4F366194B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E8EC102-B78A-41C0-A358-FA4F366194B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E8EC102-B78A-41C0-A358-FA4F366194B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
