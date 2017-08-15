@@ -9,5 +9,6 @@ namespace Securities
         IPrice[] Prices { get; }
         void Write(BinaryWriter writer);
         ISecurity Filter(DateTime beginDate, DateTime endDate);
+        ISecurity LastTwoWeeks(int offset);
     }
 }

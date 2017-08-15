@@ -28,8 +28,8 @@ namespace Securities
         public ISecurity Filter(DateTime beginDate, DateTime endDate)
         {
             var beginTicks = beginDate.Ticks;
-            var endTicks   = endDate.Ticks;
-            var newPrices  = new List<IPrice>();
+            var endTicks = endDate.Ticks;
+            var newPrices = new List<IPrice>();
 
             foreach (var price in Prices)
             {
@@ -40,9 +40,23 @@ namespace Securities
             return new Security(Symbol, newPrices.ToArray());
         }
 
+        public ISecurity LastTwoWeeks(int offset)
+        {
+            int numDays   = 14 + offset;
+            var numPrices = Math.Min(numDays, Prices.Length);
+            var newPrices = new IPrice[numPrices];
+
+            for (int i = 0; i < numDays; i++)
+            {
+                newPrices[i] = Prices[Prices.Length - numPrices + i];
+            }
+
+            return new Security(Symbol, newPrices);
+        }
+
         public static ISecurity GetSecurity(BinaryReader reader)
         {
-            var symbol    = reader.ReadString();
+            var symbol = reader.ReadString();
             var numPrices = reader.ReadInt32();
 
             var prices = new IPrice[numPrices];

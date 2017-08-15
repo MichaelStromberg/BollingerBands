@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Monitor": {
+      "commandName": "Project",
+      "commandLineArgs": "e:\\Data\\BollingerBands"
+    }
+  }
+}
