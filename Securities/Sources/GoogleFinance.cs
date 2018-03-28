@@ -13,7 +13,7 @@ namespace Securities.Sources
             string beginDate = begin.ToString("MMM+d,+yyyy");
             string endDate   = end.ToString("MMM+d,+yyyy");
 
-            string url = $"http://www.google.com/finance/historical?q={symbol}&startdate={beginDate}&enddate={endDate}&output=csv";
+            string url = $"http://finance.google.com/finance/historical?q={symbol}&startdate={beginDate}&enddate={endDate}&output=csv";
             var prices = new List<IPrice>();
 
             using (var client   = new HttpClient())

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BatchDownloader": {
+      "commandName": "Project",
+      "commandLineArgs": "e:\\Data\\BollingerBands"
+    }
+  }
+}

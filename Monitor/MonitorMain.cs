@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Analyzers.Common;
 using Securities;
@@ -17,7 +16,7 @@ namespace Monitor
             }
 
             var inputDir = args[0];
-            var symbols  = new[] {"ILMN", "JKD", "RWW", "IYM", "IDU"};
+            var symbols  = new[] {"ILMN", "RWW", "IYM", "IDU", "PHO"};
 
             foreach (var symbol in symbols)
             {

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BatchOptimize": {
+      "commandName": "Project",
+      "commandLineArgs": "e:\\Data\\BollingerBands 2"
+    }
+  }
+}

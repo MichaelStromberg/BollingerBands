@@ -21,7 +21,7 @@ namespace BatchDownloader
             {
                 "NYSEARCA:PEJ", "NYSEARCA:PBJ", "NASDAQ:PHO", "NYSEARCA:RWW", "NYSEARCA:PJP", "NYSEARCA:HECO",
                 "NYSEARCA:IYM", "NYSEARCA:IXP", "NYSEARCA:IDU", "NASDAQ:ILMN", "NYSEARCA:JKD",
-                "NYSEARCA:SCHD"
+                "NYSEARCA:SCHD", "CURRENCY:BTC"
             };
 
             foreach (var symbol in symbols)
