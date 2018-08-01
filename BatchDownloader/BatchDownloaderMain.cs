@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Securities.Sources;
+using System;
 using System.IO;
-using Securities.Sources;
 
 namespace BatchDownloader
 {
@@ -14,23 +14,18 @@ namespace BatchDownloader
                 Environment.Exit(1);
             }
 
-            var outputDir     = args[0];
-            var googleFinance = new GoogleFinance();
+            var outputDir = args[0];
+            var iex = new IexTrading();
 
-            var symbols = new[]
-            {
-                "NYSEARCA:PEJ", "NYSEARCA:PBJ", "NASDAQ:PHO", "NYSEARCA:RWW", "NYSEARCA:PJP", "NYSEARCA:HECO",
-                "NYSEARCA:IYM", "NYSEARCA:IXP", "NYSEARCA:IDU", "NASDAQ:ILMN", "NYSEARCA:JKD",
-                "NYSEARCA:SCHD", "CURRENCY:BTC"
-            };
+            var symbols = new[] { "pej", "pbj", "pho", "rww", "pjp", "heco", "iym", "ixp", "idu", "ilmn", "jkd", "schd" };
 
             foreach (var symbol in symbols)
             {
                 Console.Write($"- downloading {symbol}... ");
-                var security = googleFinance.DownloadAsync(symbol, new DateTime(2010, 1, 1), DateTime.Now).Result;
+                var security = iex.DownloadFiveYearsAsync(symbol).Result;
                 Console.WriteLine("finished.");
 
-                var outputFilename = symbol.Split(':')[1] + ".dat";
+                var outputFilename = symbol + ".dat";
                 var outputPath     = Path.Combine(outputDir, outputFilename);
 
                 Console.Write("- writing to disk... ");

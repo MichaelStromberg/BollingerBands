@@ -18,10 +18,10 @@ namespace GoogleFinanceDownload
             var symbol   = args[0];
             var filePath = args[1];
 
-            var googleFinance = new GoogleFinance();
+            var iex = new IexTrading();
 
             Console.Write("- downloading from Google Finance... ");
-            var security = googleFinance.DownloadAsync(symbol, new DateTime(2010, 1, 1), DateTime.Now).Result;
+            var security = iex.DownloadFiveYearsAsync(symbol).Result;
             Console.WriteLine("finished.");
 
             Console.Write("- writing to disk... ");
