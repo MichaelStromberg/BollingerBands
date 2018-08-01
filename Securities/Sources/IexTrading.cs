@@ -8,6 +8,9 @@ namespace Securities.Sources
 {
     public class IexTrading : ISecuritySource
     {
+#pragma warning disable 649
+#pragma warning disable 169
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class IexTradingData
         {
             // ReSharper disable InconsistentNaming
@@ -25,6 +28,8 @@ namespace Securities.Sources
             public double changeOverTime;
             // ReSharper restore InconsistentNaming
         }
+#pragma warning restore 169
+#pragma warning restore 649
 
         public async Task<ISecurity> DownloadFiveYearsAsync(string symbol)
         {

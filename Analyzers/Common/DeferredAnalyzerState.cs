@@ -59,24 +59,24 @@ namespace Analyzers.Common
 
         public PerformanceResults GetPerformanceResults()
         {
-            var profit                 = GetProfit();
-            var numTradingTicks        = GetTradingTicks();
-            var numDays                = GetNumDays(numTradingTicks);
-            var annualizedRateOfReturn = InvestmentStatistics.GetAnnualizedRateOfReturn(_initialBalance, profit, numDays);
-            var tradeSpanPercentage    = GetTradeSpanPercentage(numTradingTicks);
+            double profit                 = GetProfit();
+            long numTradingTicks          = GetTradingTicks();
+            double numDays                = GetNumDays(numTradingTicks);
+            double annualizedRateOfReturn = InvestmentStatistics.GetAnnualizedRateOfReturn(_initialBalance, profit, numDays);
+            double tradeSpanPercentage    = GetTradeSpanPercentage(numTradingTicks);
 
             return new PerformanceResults(annualizedRateOfReturn, profit, tradeSpanPercentage);
         }
 
         private void ShowStatus(IPrice price)
         {
-            string descriptor = "";
+            var descriptor = "";
             if (price.Close < BollingerBand.LowerBandPrice) descriptor = "vvv";
             if (price.Close > BollingerBand.UpperBandPrice) descriptor = "^^^";
 
-            var date = price.Date.ToString("yyyy-MM-dd HH:mm:ss");
-            var weightedLowerBandPrice = BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent;
-            var weightedUpperBandPrice = BollingerBand.UpperBandPrice * _parameters.SellTargetPercent;
+            string date = price.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            double weightedLowerBandPrice = BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent;
+            double weightedUpperBandPrice = BollingerBand.UpperBandPrice * _parameters.SellTargetPercent;
 
             Console.WriteLine($"[{date}] " +
                               $"bands: [{BollingerBand.LowerBandPrice:C}, {BollingerBand.UpperBandPrice:C}], " +
@@ -102,8 +102,8 @@ namespace Analyzers.Common
 
         public void ShowFinalBollingerBand()
         {
-            var weightedLowerBandPrice = BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent;
-            var weightedUpperBandPrice = BollingerBand.UpperBandPrice * _parameters.SellTargetPercent;
+            double weightedLowerBandPrice = BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent;
+            double weightedUpperBandPrice = BollingerBand.UpperBandPrice * _parameters.SellTargetPercent;
 
             Console.WriteLine("\nFinal bollinger band:");
             Console.WriteLine("=====================");
@@ -127,46 +127,41 @@ namespace Analyzers.Common
         private void SellShares(IPrice price)
         {
             double totalSellPrice = GetSellPrice(_numSharesOwned, price.Close);
+            if (!(price.Close >= _order.Price) || !(totalSellPrice > _totalPurchasePrice)) return;
 
-            if (price.Close >= _order.Price && totalSellPrice > _totalPurchasePrice)
+            if (_showOutput)
             {
-                if (_showOutput)
-                {
-                    ShowStatus(price);
-                    DisplaySale(_numSharesOwned, totalSellPrice, totalSellPrice - _totalPurchasePrice);
-                }
-
-                _balance += totalSellPrice;
-                _lastSale.Set(price.Date, _balance);
-                _numSharesOwned = 0;
-                _order = null;
+                ShowStatus(price);
+                DisplaySale(_numSharesOwned, totalSellPrice, totalSellPrice - _totalPurchasePrice);
             }
+
+            _balance += totalSellPrice;
+            _lastSale.Set(price.Date, _balance);
+            _numSharesOwned = 0;
+            _order = null;
         }
 
         private void BuyShares(IPrice price)
         {
-            var numDaysSinceLastSale = GetNumDaysSinceLastSale(price.Date);
+            int numDaysSinceLastSale = GetNumDaysSinceLastSale(price.Date);
             if (numDaysSinceLastSale < _numDaysUntilSettlement) return;
 
             double closePrice = price.Close;
+            if (!(closePrice <= _order.Price)) return;
 
-            if (closePrice <= _order.Price)
-            {
-                double purchaseBudget = _balance - _transactionFee;
+            double purchaseBudget = _balance - _transactionFee;
 
-                if (!_firstPurchase.IsEnabled) _firstPurchase.Set(price.Date, _balance);
+            if (!_firstPurchase.IsEnabled) _firstPurchase.Set(price.Date, _balance);
 
-                _order = null;
-                _numSharesOwned     = (int)(purchaseBudget / closePrice);
-                _totalPurchasePrice = GetTotalPurchasePrice(_numSharesOwned, closePrice);
-                _balance -= _totalPurchasePrice;
-                
-                if (_showOutput)
-                {
-                    ShowStatus(price);
-                    DisplayPurchase(_numSharesOwned, _totalPurchasePrice);
-                }
-            }
+            _order = null;
+            _numSharesOwned     = (int)(purchaseBudget / closePrice);
+            _totalPurchasePrice = GetTotalPurchasePrice(_numSharesOwned, closePrice);
+            _balance -= _totalPurchasePrice;
+
+            if (!_showOutput) return;
+
+            ShowStatus(price);
+            DisplayPurchase(_numSharesOwned, _totalPurchasePrice);
         }
     }
 }

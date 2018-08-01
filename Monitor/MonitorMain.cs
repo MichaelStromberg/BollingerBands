@@ -5,9 +5,9 @@ using Securities;
 
 namespace Monitor
 {
-    static class MonitorMain
+    internal static class MonitorMain
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -15,17 +15,17 @@ namespace Monitor
                 Environment.Exit(1);
             }
 
-            var inputDir = args[0];
+            string inputDir = args[0];
             var symbols  = new[] {"ILMN", "RWW", "IYM", "IDU", "PHO"};
 
-            foreach (var symbol in symbols)
+            foreach (string symbol in symbols)
             {
-                var dataPath = Path.Combine(inputDir, $"{symbol}.dat");
-                var bbPath   = Path.Combine(inputDir, $"{symbol}.bb");
-                var tsvPath  = Path.Combine(inputDir, $"{symbol}.tsv");
+                string dataPath = Path.Combine(inputDir, $"{symbol}.dat");
+                string bbPath   = Path.Combine(inputDir, $"{symbol}.bb");
+                string tsvPath  = Path.Combine(inputDir, $"{symbol}.tsv");
 
-                var parameters = LoadParameters(bbPath);
-                var security   = LoadSecurity(dataPath, false).LastTwoWeeks(parameters.NumPeriods);
+                Parameters parameters = LoadParameters(bbPath);
+                ISecurity security   = LoadSecurity(dataPath, false).LastTwoWeeks(parameters.NumPeriods);
 
                 var bollingerBand = new BollingerBand(parameters.NumPeriods, parameters.NumStddevs);
 
@@ -41,17 +41,14 @@ namespace Monitor
 
                     DisplayColor("      date  bb_low     low   close    high bb_high\n", true, ConsoleColor.Yellow);
  
-                    foreach (var price in security.Prices)
+                    foreach (IPrice price in security.Prices)
                     {
                         bollingerBand.Recalculate(price);
+                        if (!bollingerBand.IsCalculated) continue;
 
-                        if (bollingerBand.IsCalculated)
-                        {
-                            DisplayPrice(price, bollingerBand, parameters);                            
-                            writer.WriteLine($"{price.Date:yyyy-MM-dd}\t{bollingerBand.LowerBandPrice * parameters.BuyTargetPercent:C}\t{price.Low:C}\t{price.Close:C}\t{price.High:C}\t{bollingerBand.UpperBandPrice * parameters.SellTargetPercent:C}");
-                        }
+                        DisplayPrice(price, bollingerBand, parameters);                            
+                        writer.WriteLine($"{price.Date:yyyy-MM-dd}\t{bollingerBand.LowerBandPrice * parameters.BuyTargetPercent:C}\t{price.Low:C}\t{price.Close:C}\t{price.High:C}\t{bollingerBand.UpperBandPrice * parameters.SellTargetPercent:C}");
                     }
-
                 }
 
                 Console.WriteLine();
@@ -60,8 +57,8 @@ namespace Monitor
 
         private static void DisplayPrice(IPrice price, BollingerBand bollingerBand, Parameters parameters)
         {
-            var bollingerLow  = bollingerBand.LowerBandPrice * parameters.BuyTargetPercent;
-            var bollingerHigh = bollingerBand.UpperBandPrice * parameters.SellTargetPercent;
+            double bollingerLow  = bollingerBand.LowerBandPrice * parameters.BuyTargetPercent;
+            double bollingerHigh = bollingerBand.UpperBandPrice * parameters.SellTargetPercent;
 
             const ConsoleColor lowEventColor  = ConsoleColor.Red;
             const ConsoleColor highEventColor = ConsoleColor.Green;

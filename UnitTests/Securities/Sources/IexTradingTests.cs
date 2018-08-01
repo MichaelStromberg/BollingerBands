@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Securities;
 using Securities.Sources;
 using Xunit;
@@ -15,22 +16,19 @@ namespace UnitTests.Securities.Sources
             var expectedResults = new Price(desiredDate, 267.82, 275.34, 267.82, 272.39);
 
             var iex = new IexTrading();
-            var security = iex.DownloadFiveYearsAsync("ILMN").Result;
+            ISecurity security = iex.DownloadFiveYearsAsync("ILMN").Result;
 
-            var observedResults = FindPrice(security.Prices, desiredDate);
+            IPrice observedResults = FindPrice(security.Prices, desiredDate);
 
             var priceComparer = new PriceComparer();
             Assert.Equal(expectedResults, observedResults, priceComparer);
         }
 
-        private IPrice FindPrice(IPrice[] prices, DateTime desiredDate)
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        private static IPrice FindPrice(IPrice[] prices, DateTime desiredDate)
         {
             const string dateFormat = "yyyy-MM-dd";
-
-            foreach (var price in prices)
-                if (price.Date.ToString(dateFormat) == desiredDate.ToString(dateFormat))
-                    return price;
-            return null;
+            return prices.FirstOrDefault(price => price.Date.ToString(dateFormat) == desiredDate.ToString(dateFormat));
         }
     }
 

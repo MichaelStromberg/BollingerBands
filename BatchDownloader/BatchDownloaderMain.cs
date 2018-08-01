@@ -1,12 +1,13 @@
 ﻿using Securities.Sources;
 using System;
 using System.IO;
+using Securities;
 
 namespace BatchDownloader
 {
-    static class BatchDownloaderMain
+    internal static class BatchDownloaderMain
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length != 1)
             {
@@ -14,19 +15,19 @@ namespace BatchDownloader
                 Environment.Exit(1);
             }
 
-            var outputDir = args[0];
+            string outputDir = args[0];
             var iex = new IexTrading();
 
             var symbols = new[] { "pej", "pbj", "pho", "rww", "pjp", "heco", "iym", "ixp", "idu", "ilmn", "jkd", "schd" };
 
-            foreach (var symbol in symbols)
+            foreach (string symbol in symbols)
             {
                 Console.Write($"- downloading {symbol}... ");
-                var security = iex.DownloadFiveYearsAsync(symbol).Result;
+                ISecurity security = iex.DownloadFiveYearsAsync(symbol).Result;
                 Console.WriteLine("finished.");
 
-                var outputFilename = symbol + ".dat";
-                var outputPath     = Path.Combine(outputDir, outputFilename);
+                string outputFilename = symbol + ".dat";
+                string outputPath     = Path.Combine(outputDir, outputFilename);
 
                 Console.Write("- writing to disk... ");
                 using (var writer = new BinaryWriter(new FileStream(outputPath, FileMode.Create)))

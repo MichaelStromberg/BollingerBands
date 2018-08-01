@@ -22,18 +22,19 @@ namespace Securities
         {
             writer.Write(Symbol);
             writer.Write(Prices.Length);
-            foreach (var price in Prices) price.Write(writer);
+            foreach (IPrice price in Prices) price.Write(writer);
         }
 
         public ISecurity Filter(DateTime beginDate, DateTime endDate)
         {
-            var beginTicks = beginDate.Ticks;
-            var endTicks = endDate.Ticks;
-            var newPrices = new List<IPrice>();
+            long beginTicks = beginDate.Ticks;
+            long endTicks   = endDate.Ticks;
+            var newPrices   = new List<IPrice>();
 
-            foreach (var price in Prices)
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (IPrice price in Prices)
             {
-                var ticks = price.Date.Ticks;
+                long ticks = price.Date.Ticks;
                 if (ticks >= beginTicks && ticks <= endTicks) newPrices.Add(price);
             }
 
@@ -43,10 +44,10 @@ namespace Securities
         public ISecurity LastTwoWeeks(int offset)
         {
             int numDays   = 14 + offset;
-            var numPrices = Math.Min(numDays, Prices.Length);
+            int numPrices = Math.Min(numDays, Prices.Length);
             var newPrices = new IPrice[numPrices];
 
-            for (int i = 0; i < numDays; i++)
+            for (var i = 0; i < numDays; i++)
             {
                 newPrices[i] = Prices[Prices.Length - numPrices + i];
             }
@@ -56,11 +57,11 @@ namespace Securities
 
         public static ISecurity GetSecurity(BinaryReader reader)
         {
-            var symbol = reader.ReadString();
-            var numPrices = reader.ReadInt32();
+            string symbol = reader.ReadString();
+            int numPrices = reader.ReadInt32();
 
             var prices = new IPrice[numPrices];
-            for (int i = 0; i < numPrices; i++) prices[i] = Price.GetPrice(reader);
+            for (var i = 0; i < numPrices; i++) prices[i] = Price.GetPrice(reader);
 
             return new Security(symbol, prices);
         }

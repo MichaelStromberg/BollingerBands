@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Securities", "Securities\Securities.csproj", "{9B27B74E-5279-4477-B600-70A4B4E8B1F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoogleFinanceDownload", "GoogleFinanceDownload\GoogleFinanceDownload.csproj", "{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optimize", "Optimize\Optimize.csproj", "{455061F1-D92F-4832-B07C-477C50E2001A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B9F90443-4356-4EFF-ADFA-AF4CC13B2EDA}"
@@ -17,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchDownloader", "BatchDow
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatchOptimize", "BatchOptimize\BatchOptimize.csproj", "{6E8EC102-B78A-41C0-A358-FA4F366194B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitor", "Monitor\Monitor.csproj", "{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monitor", "Monitor\Monitor.csproj", "{5C60EF0E-4159-4A69-A6A5-A0D3EC140CE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{9B27B74E-5279-4477-B600-70A4B4E8B1F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B27B74E-5279-4477-B600-70A4B4E8B1F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B27B74E-5279-4477-B600-70A4B4E8B1F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8F4DF72-F9B7-4CD9-A524-C49507AE4A31}.Release|Any CPU.Build.0 = Release|Any CPU
 		{455061F1-D92F-4832-B07C-477C50E2001A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{455061F1-D92F-4832-B07C-477C50E2001A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{455061F1-D92F-4832-B07C-477C50E2001A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,5 +54,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {602ECBC4-3DDF-4879-A21B-98E25E9DFF9E}
 	EndGlobalSection
 EndGlobal

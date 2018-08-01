@@ -6,7 +6,7 @@ namespace Optimize
 {
     public static class OptimizeMain
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length != 3)
             {
@@ -14,13 +14,13 @@ namespace Optimize
                 Environment.Exit(1);
             }
 
-            var inputPath  = args[0];
-            var outputPath = args[1];
-            var numYears   = int.Parse(args[2]);
-            var security   = LoadSecurity(inputPath);
+            string inputPath  = args[0];
+            string outputPath = args[1];
+            int numYears   = int.Parse(args[2]);
+            ISecurity security   = LoadSecurity(inputPath);
 
-            var lastDate  = security.Prices[security.Prices.Length - 1].Date;
-            var firstDate = lastDate.AddYears(-numYears);
+            DateTime lastDate  = security.Prices[security.Prices.Length - 1].Date;
+            DateTime firstDate = lastDate.AddYears(-numYears);
             security      = security.Filter(firstDate, lastDate);
 
             var optimizer = new Optimizer(security);

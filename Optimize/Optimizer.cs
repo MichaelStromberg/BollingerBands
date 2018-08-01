@@ -71,7 +71,7 @@ namespace Optimize
 
             const int numStages = 5;
 
-            for (int currentStage = 1; currentStage <= numStages; currentStage++)
+            for (var currentStage = 1; currentStage <= numStages; currentStage++)
             {
                 if (_showOutput)
                 {

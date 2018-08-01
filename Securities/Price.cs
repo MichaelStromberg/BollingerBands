@@ -34,12 +34,12 @@ namespace Securities
 
         public static IPrice GetPrice(BinaryReader reader)
         {
-            var ticks = reader.ReadInt64();
-            var date  = new DateTime(ticks);
-            var open  = reader.ReadDouble();
-            var high  = reader.ReadDouble();
-            var low   = reader.ReadDouble();
-            var close = reader.ReadDouble();
+            long ticks   = reader.ReadInt64();
+            var date     = new DateTime(ticks);
+            double open  = reader.ReadDouble();
+            double high  = reader.ReadDouble();
+            double low   = reader.ReadDouble();
+            double close = reader.ReadDouble();
 
             return new Price(date, open, high, low, close);
         }

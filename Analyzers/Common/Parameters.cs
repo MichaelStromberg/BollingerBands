@@ -45,10 +45,10 @@ namespace Analyzers.Common
 
         public static Parameters Read(BinaryReader reader)
         {
-            var numPeriods        = reader.ReadInt32();
-            var numStddevs        = reader.ReadDouble();
-            var buyTargetPercent  = reader.ReadDouble();
-            var sellTargetPercent = reader.ReadDouble();
+            int numPeriods           = reader.ReadInt32();
+            double numStddevs        = reader.ReadDouble();
+            double buyTargetPercent  = reader.ReadDouble();
+            double sellTargetPercent = reader.ReadDouble();
             return new Parameters(numPeriods, numStddevs, buyTargetPercent, sellTargetPercent);
         }
 
