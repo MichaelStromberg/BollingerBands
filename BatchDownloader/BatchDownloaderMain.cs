@@ -16,14 +16,14 @@ namespace BatchDownloader
             }
 
             string outputDir = args[0];
-            var iex = new IexTrading();
+            var yahoo = new YahooFinance();
 
             var symbols = new[] { "pej", "pbj", "pho", "rww", "pjp", "heco", "iym", "ixp", "idu", "ilmn", "jkd", "schd" };
 
             foreach (string symbol in symbols)
             {
                 Console.Write($"- downloading {symbol}... ");
-                ISecurity security = iex.DownloadFiveYearsAsync(symbol).Result;
+                ISecurity security = yahoo.DownloadFiveYearsAsync(symbol).Result;
                 Console.WriteLine("finished.");
 
                 string outputFilename = symbol + ".dat";

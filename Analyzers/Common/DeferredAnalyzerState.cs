@@ -74,7 +74,7 @@ namespace Analyzers.Common
             if (price.Close < BollingerBand.LowerBandPrice) descriptor = "vvv";
             if (price.Close > BollingerBand.UpperBandPrice) descriptor = "^^^";
 
-            string date = price.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            var date = price.Date.ToString("yyyy-MM-dd HH:mm:ss");
             double weightedLowerBandPrice = BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent;
             double weightedUpperBandPrice = BollingerBand.UpperBandPrice * _parameters.SellTargetPercent;
 

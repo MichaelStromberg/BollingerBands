@@ -48,10 +48,10 @@ namespace BatchOptimize
             });
 
             Console.WriteLine();
-            foreach (var kvp in symbolToParameters.OrderByDescending(x => x.Value.Results.Profit))
+            foreach ((string symbol, Parameters parameters) in symbolToParameters.OrderByDescending(x => x.Value.Results.Profit))
             {
-                PerformanceResults results = kvp.Value.Results;
-                Console.WriteLine($"{kvp.Key}\t{results.AnnualizedRateOfReturn*100.0:0.00}% return/yr\t{results.Profit:C}\t{results.TradeSpanPercentage*100.0:0.00}% span");
+                PerformanceResults results = parameters.Results;
+                Console.WriteLine($"{symbol}\t{results.AnnualizedRateOfReturn*100.0:0.00}% return/yr\t{results.Profit:C}\t{results.TradeSpanPercentage*100.0:0.00}% span");
             }
         }
     }
