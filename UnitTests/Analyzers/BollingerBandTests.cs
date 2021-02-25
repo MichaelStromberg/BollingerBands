@@ -12,10 +12,10 @@ namespace UnitTests.Analyzers
         [Fact]
         public void Recalculate_FirstPeriod()
         {
-            var prices = GetPrices();
+            List<IPrice> prices = GetPrices();
 
             var bollingerBand = new BollingerBand(14, 2.0);
-            foreach (var price in prices) bollingerBand.Recalculate(price);
+            foreach (IPrice price in prices) bollingerBand.Recalculate(price);
 
             Assert.True(bollingerBand.IsCalculated);
 
@@ -29,11 +29,11 @@ namespace UnitTests.Analyzers
         [Fact]
         public void Recalculate_AdditionalPeriod()
         {
-            var prices = GetPrices();
+            List<IPrice> prices = GetPrices();
             prices.Add(new Price(DateTime.Now, 0, 0, 0, 164.34));
 
             var bollingerBand = new BollingerBand(14, 2.0);
-            foreach (var price in prices) bollingerBand.Recalculate(price);
+            foreach (IPrice price in prices) bollingerBand.Recalculate(price);
 
             Assert.True(bollingerBand.IsCalculated);
 

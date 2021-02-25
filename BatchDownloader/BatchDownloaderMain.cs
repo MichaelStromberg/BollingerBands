@@ -11,19 +11,20 @@ namespace BatchDownloader
         {
             if (args.Length != 1)
             {
-                Console.WriteLine("USAGE: {0} <output directory>", Path.GetFileName(Environment.GetCommandLineArgs()[0]));
+                Console.WriteLine("USAGE: {0} <output directory>",
+                    Path.GetFileName(Environment.GetCommandLineArgs()[0]));
                 Environment.Exit(1);
             }
 
             string outputDir = args[0];
-            var yahoo = new YahooFinance();
 
-            var symbols = new[] { "pej", "pbj", "pho", "rww", "pjp", "heco", "iym", "ixp", "idu", "ilmn", "jkd", "schd" };
+            // var symbols = new[] {"pej", "pbj", "pho", "rww", "pjp", "heco", "iym", "ixp", "idu", "ilmn", "jkd", "schd"};
+            var symbols = new[] {"ilmn"};
 
             foreach (string symbol in symbols)
             {
                 Console.Write($"- downloading {symbol}... ");
-                ISecurity security = yahoo.DownloadFiveYearsAsync(symbol).Result;
+                ISecurity security = YahooFinance.DownloadFiveYearsAsync(symbol).Result;
                 Console.WriteLine("finished.");
 
                 string outputFilename = symbol + ".dat";
@@ -34,6 +35,7 @@ namespace BatchDownloader
                 {
                     security.Write(writer);
                 }
+
                 Console.WriteLine("finished.");
             }
         }

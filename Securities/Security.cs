@@ -8,10 +8,7 @@ namespace Securities
     {
         public string Symbol { get; }
         public IPrice[] Prices { get; }
-
-        /// <summary>
-        /// constructor
-        /// </summary>
+        
         public Security(string symbol, IPrice[] prices)
         {
             Symbol = symbol;

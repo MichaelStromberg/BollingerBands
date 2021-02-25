@@ -23,10 +23,7 @@ namespace Analyzers.Common
             _numPeriods = numPeriods;
             _numStddevs = numStddevs;
         }
-
-        /// <summary>
-        /// recalculate the upper and lower bands
-        /// </summary>
+        
         public void Recalculate(IPrice newPrice)
         {
             // remove the oldest price

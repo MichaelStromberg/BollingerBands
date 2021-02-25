@@ -10,18 +10,19 @@ namespace Optimize
         {
             if (args.Length != 3)
             {
-                Console.WriteLine("USAGE: {0} <input path> <output path> <# of years>", Path.GetFileName(Environment.GetCommandLineArgs()[0]));
+                Console.WriteLine("USAGE: {0} <input path> <output path> <# of years>",
+                    Path.GetFileName(Environment.GetCommandLineArgs()[0]));
                 Environment.Exit(1);
             }
 
-            string inputPath  = args[0];
-            string outputPath = args[1];
-            int numYears   = int.Parse(args[2]);
+            string    inputPath  = args[0];
+            string    outputPath = args[1];
+            int       numYears   = int.Parse(args[2]);
             ISecurity security   = LoadSecurity(inputPath);
 
-            DateTime lastDate  = security.Prices[security.Prices.Length - 1].Date;
+            DateTime lastDate  = security.Prices[^1].Date;
             DateTime firstDate = lastDate.AddYears(-numYears);
-            security      = security.Filter(firstDate, lastDate);
+            security = security.Filter(firstDate, lastDate);
 
             var optimizer = new Optimizer(security);
             optimizer.Optimize(outputPath);

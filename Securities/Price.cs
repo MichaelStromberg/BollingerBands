@@ -5,15 +5,12 @@ namespace Securities
 {
     public class Price : IPrice
     {
-        public DateTime Date { get; }
-        public double Open { get; }
-        public double High { get; }
-        public double Low { get; }
-        public double Close { get; }
+        public  DateTime Date  { get; }
+        private double   Open  { get; }
+        public  double   High  { get; }
+        public  double   Low   { get; }
+        public  double   Close { get; }
 
-        /// <summary>
-        /// constructor
-        /// </summary>
         public Price(DateTime date, double open, double high, double low, double close)
         {
             Date  = date;

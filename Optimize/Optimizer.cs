@@ -9,11 +9,12 @@ namespace Optimize
     public class Optimizer
     {
         private readonly ISecurity _security;
-        private readonly double _startCapital;
-        private readonly double _transactionFee;
-        private readonly bool _showOutput;
+        private readonly double    _startCapital;
+        private readonly double    _transactionFee;
+        private readonly bool      _showOutput;
 
-        public Optimizer(ISecurity security, double startCapital = 100000.0, double transactionFee = 9.99, bool showOutput = true)
+        public Optimizer(ISecurity security, double startCapital = 100000.0, double transactionFee = 9.99,
+            bool showOutput = true)
         {
             _security       = security;
             _startCapital   = startCapital;
@@ -21,9 +22,6 @@ namespace Optimize
             _showOutput     = showOutput;
         }
 
-        /// <summary>
-        /// returns the optimal parameters given an analyzer, security, and parameter range
-        /// </summary>
         private Parameters FindBestParameters(IAnalyzer analyzer, ParameterRange paramRange)
         {
             if (_showOutput)
@@ -36,16 +34,25 @@ namespace Optimize
             var bestParameters    = new Parameters(paramRange);
             bestParameters.Update(currentParameters);
 
-            for (currentParameters.NumPeriods = paramRange.NumPeriods.Begin; currentParameters.NumPeriods <= paramRange.NumPeriods.End; currentParameters.NumPeriods++)
+            for (currentParameters.NumPeriods = paramRange.NumPeriods.Begin;
+                currentParameters.NumPeriods <= paramRange.NumPeriods.End;
+                currentParameters.NumPeriods++)
             {
-                for (currentParameters.NumStddevs = paramRange.NumStddevs.Begin; currentParameters.NumStddevs <= paramRange.NumStddevs.End; currentParameters.NumStddevs += paramRange.NumStddevs.StepSize)
+                for (currentParameters.NumStddevs = paramRange.NumStddevs.Begin;
+                    currentParameters.NumStddevs <= paramRange.NumStddevs.End;
+                    currentParameters.NumStddevs += paramRange.NumStddevs.StepSize)
                 {
-                    for (currentParameters.BuyTargetPercent = paramRange.BuyTargetPercent.Begin; currentParameters.BuyTargetPercent <= paramRange.BuyTargetPercent.End; currentParameters.BuyTargetPercent += paramRange.BuyTargetPercent.StepSize)
+                    for (currentParameters.BuyTargetPercent = paramRange.BuyTargetPercent.Begin;
+                        currentParameters.BuyTargetPercent <= paramRange.BuyTargetPercent.End;
+                        currentParameters.BuyTargetPercent += paramRange.BuyTargetPercent.StepSize)
                     {
-                        for (currentParameters.SellTargetPercent = paramRange.SellTargetPercent.Begin; currentParameters.SellTargetPercent < paramRange.SellTargetPercent.End; currentParameters.SellTargetPercent += paramRange.SellTargetPercent.StepSize)
+                        for (currentParameters.SellTargetPercent = paramRange.SellTargetPercent.Begin;
+                            currentParameters.SellTargetPercent < paramRange.SellTargetPercent.End;
+                            currentParameters.SellTargetPercent += paramRange.SellTargetPercent.StepSize)
                         {
                             analyzer.CalculatePerformanceResults(currentParameters, _startCapital);
-                            if (currentParameters.Results.WeightedProfit <= bestParameters.Results.WeightedProfit) continue;
+                            if (currentParameters.Results.WeightedProfit <= bestParameters.Results.WeightedProfit)
+                                continue;
 
                             bestParameters.Update(currentParameters);
                             if (_showOutput) Console.WriteLine(bestParameters);
@@ -59,14 +66,11 @@ namespace Optimize
             return bestParameters;
         }
 
-        /// <summary>
-        /// analyzes each security for Bollinger Band values
-        /// </summary>
         public Parameters Optimize(string outputPath)
         {
-            const int numDaysUntilSettlement = 5;
-            var analyzer              = new DeferredAnalyzer(_security, _transactionFee, numDaysUntilSettlement);
-            var paramRange            = new ParameterRange();
+            const int  numDaysUntilSettlement = 5;
+            var        analyzer = new DeferredAnalyzer(_security, _transactionFee, numDaysUntilSettlement);
+            var        paramRange = new ParameterRange();
             Parameters bestParameters = null;
 
             const int numStages = 5;
@@ -94,17 +98,13 @@ namespace Optimize
                 Console.WriteLine();
             }
 
-            using (var writer = new BinaryWriter(new FileStream(outputPath, FileMode.Create)))
-            {
-                bestParameters.Write(writer);
-            }
+            using var writer = new BinaryWriter(new FileStream(outputPath, FileMode.Create));
+            bestParameters.Write(writer);
 
             return bestParameters;
         }
 
-        private void DisplayTransactions(IAnalyzer analyzer, Parameters parameters)
-        {
+        private void DisplayTransactions(IAnalyzer analyzer, Parameters parameters) =>
             analyzer.CalculatePerformanceResults(parameters, _startCapital, _showOutput);
-        }
     }
 }

@@ -18,7 +18,7 @@ namespace Analyzers
 
         public void CalculatePerformanceResults(Parameters parameters, double startCapital, bool showOutput = false)
         {
-            long totalTicks = _security.Prices[_security.Prices.Length - 1].Date.Ticks - _security.Prices[0].Date.Ticks;
+            long totalTicks = _security.Prices[^1].Date.Ticks - _security.Prices[0].Date.Ticks;
             var state = new DeferredAnalyzerState(parameters, _transactionFee, startCapital, totalTicks, showOutput,
                 _numDaysUntilSettlement);
 

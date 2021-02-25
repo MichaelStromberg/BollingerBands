@@ -5,9 +5,6 @@ namespace Securities
 {
     public static class ParsingUtilities
     {
-        /// <summary>
-        /// tries to parse the date in a number of different formats
-        /// </summary>
         public static DateTime GetDate(string s)
         {
             bool conversionSuccess = DateTime.TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date);

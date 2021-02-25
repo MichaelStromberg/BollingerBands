@@ -8,12 +8,12 @@ namespace Analyzers.Common
         public readonly BollingerBand BollingerBand;
         private readonly double _transactionFee;
 
-        private readonly Transaction _firstPurchase = new Transaction();
-        private readonly Transaction _lastSale = new Transaction();
-        private readonly Parameters _parameters;
-        private readonly double _initialBalance;
-        private readonly bool _showOutput;
-        private readonly int _numDaysUntilSettlement;
+        private readonly Transaction _firstPurchase = new();
+        private readonly Transaction _lastSale      = new();
+        private readonly Parameters  _parameters;
+        private readonly double      _initialBalance;
+        private readonly bool        _showOutput;
+        private readonly int         _numDaysUntilSettlement;
 
         private readonly long _totalTicks;
 
@@ -113,9 +113,9 @@ namespace Analyzers.Common
 
         public void CreateOrder() => _order = _numSharesOwned == 0 ? CreateBuyOrder() : CreateSellOrder();
 
-        private Order CreateSellOrder() => new Order(OrderType.Sell, BollingerBand.UpperBandPrice * _parameters.SellTargetPercent);
+        private Order CreateSellOrder() => new(OrderType.Sell, BollingerBand.UpperBandPrice * _parameters.SellTargetPercent);
 
-        private Order CreateBuyOrder() => new Order(OrderType.Buy, BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent);
+        private Order CreateBuyOrder() => new(OrderType.Buy, BollingerBand.LowerBandPrice * _parameters.BuyTargetPercent);
 
         public void HandleOrder(IPrice price)
         {

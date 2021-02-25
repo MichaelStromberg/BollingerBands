@@ -11,12 +11,14 @@ namespace Monitor
         {
             if (args.Length != 1)
             {
-                Console.WriteLine("USAGE: {0} <input directory>", Path.GetFileName(Environment.GetCommandLineArgs()[0]));
+                Console.WriteLine("USAGE: {0} <input directory>",
+                    Path.GetFileName(Environment.GetCommandLineArgs()[0]));
                 Environment.Exit(1);
             }
 
             string inputDir = args[0];
-            var symbols  = new[] {"ILMN", "RWW", "IYM", "IDU", "PHO"};
+            // var symbols  = new[] {"ILMN", "RWW", "IYM", "IDU", "PHO"};
+            var symbols = new[] {"ILMN"};
 
             foreach (string symbol in symbols)
             {
@@ -25,7 +27,7 @@ namespace Monitor
                 string tsvPath  = Path.Combine(inputDir, $"{symbol}.tsv");
 
                 Parameters parameters = LoadParameters(bbPath);
-                ISecurity security   = LoadSecurity(dataPath, false).LastTwoWeeks(parameters.NumPeriods);
+                ISecurity  security   = LoadSecurity(dataPath, false).LastTwoWeeks(parameters.NumPeriods);
 
                 var bollingerBand = new BollingerBand(parameters.NumPeriods, parameters.NumStddevs);
 
@@ -37,17 +39,19 @@ namespace Monitor
                     Console.WriteLine(security.Symbol);
                     Console.ResetColor();
 
-                    Console.WriteLine($"Periods: {parameters.NumPeriods}, Stddevs: {parameters.NumStddevs:0.0000}, Buy: {parameters.BuyTargetPercent * 100.0:0.000} %, Sell: {parameters.SellTargetPercent * 100.0:0.000} %\n");
+                    Console.WriteLine(
+                        $"Periods: {parameters.NumPeriods}, Stddevs: {parameters.NumStddevs:0.0000}, Buy: {parameters.BuyTargetPercent * 100.0:0.000} %, Sell: {parameters.SellTargetPercent * 100.0:0.000} %\n");
 
                     DisplayColor("      date  bb_low     low   close    high bb_high\n", true, ConsoleColor.Yellow);
- 
+
                     foreach (IPrice price in security.Prices)
                     {
                         bollingerBand.Recalculate(price);
                         if (!bollingerBand.IsCalculated) continue;
 
-                        DisplayPrice(price, bollingerBand, parameters);                            
-                        writer.WriteLine($"{price.Date:yyyy-MM-dd}\t{bollingerBand.LowerBandPrice * parameters.BuyTargetPercent:C}\t{price.Low:C}\t{price.Close:C}\t{price.High:C}\t{bollingerBand.UpperBandPrice * parameters.SellTargetPercent:C}");
+                        DisplayPrice(price, bollingerBand, parameters);
+                        writer.WriteLine(
+                            $"{price.Date:yyyy-MM-dd}\t{bollingerBand.LowerBandPrice * parameters.BuyTargetPercent:C}\t{price.Low:C}\t{price.Close:C}\t{price.High:C}\t{bollingerBand.UpperBandPrice * parameters.SellTargetPercent:C}");
                     }
                 }
 
@@ -63,17 +67,17 @@ namespace Monitor
             const ConsoleColor lowEventColor  = ConsoleColor.Red;
             const ConsoleColor highEventColor = ConsoleColor.Green;
 
-            bool hasLowEvent  = price.Low <= bollingerLow;
+            bool hasLowEvent  = price.Low  <= bollingerLow;
             bool hasHighEvent = price.High >= bollingerHigh;
 
             DisplayColor($"{price.Date:yyyy-MM-dd} ", true, ConsoleColor.DarkGray);
 
             DisplayColor($"{bollingerLow,7:C} ", hasLowEvent, lowEventColor);
-            DisplayColor($"{price.Low,7:C} ", hasLowEvent, lowEventColor);
+            DisplayColor($"{price.Low,7:C} ",    hasLowEvent, lowEventColor);
 
-            Console.Write($"{ price.Close,7:C} ");
+            Console.Write($"{price.Close,7:C} ");
 
-            DisplayColor($"{price.High,7:C} ", hasHighEvent, highEventColor);
+            DisplayColor($"{price.High,7:C} ",   hasHighEvent, highEventColor);
             DisplayColor($"{bollingerHigh,7:C}", hasHighEvent, highEventColor);
             Console.WriteLine();
         }
@@ -82,16 +86,13 @@ namespace Monitor
         {
             if (useColor) Console.ForegroundColor = color;
             Console.Write(s);
-            if(useColor) Console.ResetColor();
+            if (useColor) Console.ResetColor();
         }
 
         private static Parameters LoadParameters(string filePath)
         {
-            Parameters parameters;
-            using (var reader = new BinaryReader(new FileStream(filePath, FileMode.Open)))
-            {
-                parameters = Parameters.Read(reader);
-            }
+            using var  reader     = new BinaryReader(new FileStream(filePath, FileMode.Open));
+            Parameters parameters = Parameters.Read(reader);
             return parameters;
         }
 
@@ -108,6 +109,5 @@ namespace Monitor
             if (showOutput) Console.WriteLine($"{security.Prices.Length} prices loaded.");
             return security;
         }
-
     }
 }

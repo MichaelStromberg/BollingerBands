@@ -15,13 +15,14 @@ namespace BatchOptimize
         {
             if (args.Length != 2)
             {
-                Console.WriteLine("USAGE: {0} <input directory> <# of years>", Path.GetFileName(Environment.GetCommandLineArgs()[0]));
+                Console.WriteLine("USAGE: {0} <input directory> <# of years>",
+                    Path.GetFileName(Environment.GetCommandLineArgs()[0]));
                 Environment.Exit(1);
             }
 
-            string inputDir            = args[0];
-            int numYears            = int.Parse(args[1]);
-            var symbolToParameters  = new List<KeyValuePair<string, Parameters>>();
+            string inputDir           = args[0];
+            int    numYears           = int.Parse(args[1]);
+            var    symbolToParameters = new List<KeyValuePair<string, Parameters>>();
 
             var lockObject = new object();
 
@@ -31,27 +32,29 @@ namespace BatchOptimize
                 ISecurity security = OptimizeMain.LoadSecurity(securityPath, false);
                 Console.WriteLine($"- {security.Symbol}");
 
-                DateTime lastDate = security.Prices[security.Prices.Length - 1].Date;
+                DateTime lastDate  = security.Prices[^1].Date;
                 DateTime firstDate = lastDate.AddYears(-numYears);
                 security = security.Filter(firstDate, lastDate);
 
                 var optimizer = new Optimizer(security, 100000, 9.99, false);
 
                 string outputPath = Path.Combine(Path.GetDirectoryName(securityPath),
-                                     Path.GetFileNameWithoutExtension(securityPath)) + ".bb";
+                    Path.GetFileNameWithoutExtension(securityPath)) + ".bb";
                 Parameters securityResults = optimizer.Optimize(outputPath);
 
                 lock (lockObject)
                 {
                     symbolToParameters.Add(new KeyValuePair<string, Parameters>(security.Symbol, securityResults));
-                }                
+                }
             });
 
             Console.WriteLine();
-            foreach ((string symbol, Parameters parameters) in symbolToParameters.OrderByDescending(x => x.Value.Results.Profit))
+            foreach ((string symbol, Parameters parameters) in symbolToParameters.OrderByDescending(x =>
+                x.Value.Results.Profit))
             {
                 PerformanceResults results = parameters.Results;
-                Console.WriteLine($"{symbol}\t{results.AnnualizedRateOfReturn*100.0:0.00}% return/yr\t{results.Profit:C}\t{results.TradeSpanPercentage*100.0:0.00}% span");
+                Console.WriteLine(
+                    $"{symbol}\t{results.AnnualizedRateOfReturn * 100.0:0.00}% return/yr\t{results.Profit:C}\t{results.TradeSpanPercentage * 100.0:0.00}% span");
             }
         }
     }

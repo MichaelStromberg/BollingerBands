@@ -17,10 +17,7 @@ namespace Analyzers.Common
             BuyTargetPercent  = new DoubleParameterRange(0.97, 1.00, 0.005);
             SellTargetPercent = new DoubleParameterRange(1.00, 1.03, 0.005);
         }
-
-        /// <summary>
-        /// updates the parameter range to focus around the best values
-        /// </summary>
+        
         public void Update(Parameters bestParameters)
         {
             CalculateNewRange(bestParameters.NumPeriods, NumPeriods);
@@ -28,10 +25,7 @@ namespace Analyzers.Common
             CalculateNewRange(bestParameters.BuyTargetPercent, BuyTargetPercent);
             CalculateNewRange(bestParameters.SellTargetPercent, SellTargetPercent);
         }
-
-        /// <summary>
-        /// calculates a new range given integer values
-        /// </summary>
+        
         private static void CalculateNewRange(int bestValue, IntParameterRange paramRange)
         {
             if (paramRange.Begin == paramRange.End) return;
@@ -49,10 +43,7 @@ namespace Analyzers.Common
             paramRange.Begin = begin;
             paramRange.End   = end;
         }
-
-        /// <summary>
-        /// calculates a new range given double values
-        /// </summary>
+        
         private static void CalculateNewRange(double bestValue, DoubleParameterRange paramRange)
         {
             double oldNumSteps  = (paramRange.End - paramRange.Begin) / paramRange.StepSize;
@@ -68,10 +59,7 @@ namespace Analyzers.Common
             paramRange.Begin = begin;
             paramRange.End   = end;
         }
-
-        /// <summary>
-        /// returns a string representation of our parameter range
-        /// </summary>
+        
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -122,10 +110,7 @@ namespace Analyzers.Common
                 StepSize = stepSize;
             }
 
-            public override string ToString()
-            {
-                return $"{Begin} - {End} ({StepSize})";
-            }
+            public override string ToString() => $"{Begin} - {End} ({StepSize})";
         }
     }
 }
