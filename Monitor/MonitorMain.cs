@@ -40,7 +40,7 @@ namespace Monitor
                     Console.ResetColor();
 
                     Console.WriteLine(
-                        $"Periods: {parameters.NumPeriods}, Stddevs: {parameters.NumStddevs:0.0000}, Buy: {parameters.BuyTargetPercent * 100.0:0.000} %, Sell: {parameters.SellTargetPercent * 100.0:0.000} %\n");
+                        $"Periods: {parameters.NumPeriods}, σ: {parameters.NumStddevs:F5}, Buy: {parameters.BuyTargetPercent * 100.0:F5}%, Sell: {parameters.SellTargetPercent * 100.0:F5}%\n");
 
                     DisplayColor("      date  bb_low     low   close    high bb_high\n", true, ConsoleColor.Yellow);
 
