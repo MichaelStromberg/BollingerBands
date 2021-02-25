@@ -14,8 +14,8 @@ namespace Analyzers.Common
         {
             NumPeriods        = new IntParameterRange(2, 20);
             NumStddevs        = new DoubleParameterRange(0.5, 5, 0.1);
-            BuyTargetPercent  = new DoubleParameterRange(0.97, 1.00, 0.005);
-            SellTargetPercent = new DoubleParameterRange(1.00, 1.03, 0.005);
+            BuyTargetPercent  = new DoubleParameterRange(0.96, 1.00, 0.005);
+            SellTargetPercent = new DoubleParameterRange(1.00, 1.04, 0.005);
         }
         
         public void Update(Parameters bestParameters)
@@ -110,7 +110,7 @@ namespace Analyzers.Common
                 StepSize = stepSize;
             }
 
-            public override string ToString() => $"{Begin} - {End} ({StepSize})";
+            public override string ToString() => $"{Begin:F6} - {End:F6} ({StepSize:E1})";
         }
     }
 }

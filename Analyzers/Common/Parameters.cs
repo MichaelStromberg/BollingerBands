@@ -33,7 +33,8 @@ namespace Analyzers.Common
             Results           = other.Results;
         }
 
-        public override string ToString() => $"Best annualized rate of return: {Results.AnnualizedRateOfReturn * 100.0:0.00} % with {NumPeriods} periods {NumStddevs:0.0000} stddevs. Buy: {BuyTargetPercent * 100.0:0.000} %, Sell: {SellTargetPercent * 100.0:0.000} %, Profit: {Results.Profit:C}, Trade Span: {Results.TradeSpanPercentage * 100.0:0.00} %";
+        public override string ToString() =>
+            $"Best annualized rate of return: {Results.AnnualizedRateOfReturn * 100.0:F2}% with {NumPeriods} periods, {NumStddevs:F5} σ. Buy: {BuyTargetPercent * 100.0:F5}%, Sell: {SellTargetPercent * 100.0:F5}%, Profit: {Results.Profit:C}, Trade Span: {Results.TradeSpanPercentage * 100.0:F2}%";
 
         public void UpdateResults(IAnalyzerState state) => Results = state.GetPerformanceResults();
 

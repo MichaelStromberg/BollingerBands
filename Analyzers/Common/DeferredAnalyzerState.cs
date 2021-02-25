@@ -106,7 +106,7 @@ namespace Analyzers.Common
             double weightedUpperBandPrice = BollingerBand.UpperBandPrice * _parameters.SellTargetPercent;
 
             Console.WriteLine("\nFinal bollinger band:");
-            Console.WriteLine("=====================");
+            Console.WriteLine("===================================");
             Console.WriteLine($"bands: [{BollingerBand.LowerBandPrice:C}, {BollingerBand.UpperBandPrice:C}], " +
                               $"weighted bands: [{weightedLowerBandPrice:C}, {weightedUpperBandPrice:C}]\n");
         }

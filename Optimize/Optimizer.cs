@@ -73,6 +73,8 @@ namespace Optimize
             var        paramRange = new ParameterRange();
             Parameters bestParameters = null;
 
+            var lineBreak = new string('=', 35);
+
             const int numStages = 5;
 
             for (var currentStage = 1; currentStage <= numStages; currentStage++)
@@ -80,10 +82,11 @@ namespace Optimize
                 if (_showOutput)
                 {
                     Console.WriteLine("Current stage: {0} ({1})", currentStage, _security.Symbol);
-                    Console.WriteLine("================================");
+                    Console.WriteLine(lineBreak);
                 }
 
                 bestParameters = FindBestParameters(analyzer, paramRange);
+                Console.WriteLine();
             }
 
             if (_showOutput) DisplayTransactions(analyzer, bestParameters);
@@ -93,9 +96,8 @@ namespace Optimize
             if (_showOutput)
             {
                 Console.WriteLine("Results:");
-                Console.WriteLine("================================================================================");
+                Console.WriteLine(lineBreak);
                 Console.WriteLine(bestParameters);
-                Console.WriteLine();
             }
 
             using var writer = new BinaryWriter(new FileStream(outputPath, FileMode.Create));
